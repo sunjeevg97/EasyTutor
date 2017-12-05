@@ -1,0 +1,26 @@
+body{
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('studying.jpg');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;
+}
+
+body:after {
+    content: "";
+    background: url('checkered-pattern.png') repeat;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+
+}
+
+.jumbotron{
+  background-color: rgba(5,4,2,0);
+}
+
+h1,h2,p,label,a{
+  color: white;
+}

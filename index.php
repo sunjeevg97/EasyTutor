@@ -31,7 +31,7 @@
         <button class="btn btn-lg btn-outline-success .col-md-3" type="submit">Sign in</button>
       </form>
 
-        <a href="signup.html" class="">Don't have an account? Sign up here!</a>
+        <a href="signup.php" class="">Don't have an account? Sign up here!</a>
 
     </div>
 

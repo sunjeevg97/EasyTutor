@@ -1,5 +1,7 @@
-<html>
+<?php
 
+?>
+<html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="index.css">
@@ -19,26 +21,30 @@
 
     <div class="container">
 
-      <form class="form-signup">
+      <form class="form-signup" method = "POST" action = "signup_script.php">
+
+        <div class = "form-group">
+        <label for="inputName" class="sr-only">Full name</label>
+        <input type="name" name = "full_name" id="inputName" class="form-control-lg" placeholder="Full Name" required>
+        </div>
 
         <div class = "form-group">
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control-lg" placeholder="Email address" required autofocus>
-
+        <input type="email" name = "email" id="inputEmail" class="form-control-lg" placeholder="Email address" required autofocus>
         </div>
 
         <div class = "form-group">
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control-lg" placeholder="Password" required>
+        <input type="password" name = "password" id="inputPassword" class="form-control-lg" placeholder="Password" required>
         </div>
 
         <div class = "form-group">
         <label for="inputPhone" class="sr-only">Phone number</label>
-        <input type="phone" id="inputPhone" class="form-control-lg" placeholder="Phone number" required>
+        <input type="phone" name = "phone" id="inputPhone" class="form-control-lg" placeholder="Phone number" required>
         </div>
 
         <div class = "form-group">
-        <select class="form-control-lg" placeholder = "User Type">
+        <select class="form-control-lg" name="type" placeholder = "User Type">
           <option>Tutor</option>
           <option>Student</option>
         </select>

@@ -21,7 +21,7 @@
 
     <div class="container">
 
-      <form class="form-signup" method = "POST" action = "signup_script.php">
+      <form class="form-signup" method = "POST" action = "aftersignup.php">
 
         <div class = "form-group">
         <label for="inputName" class="sr-only">Full name</label>
@@ -49,7 +49,7 @@
           <option>Student</option>
         </select>
         </div>
-          <button class="btn btn-lg btn-outline-success .col-md-3" type="submit">Sign Up</button>
+          <button class="btn btn-lg btn-outline-success .col-md-3" name="submit" type="submit">Sign Up</button>
           <a href="index.html" class="">Already have an account? Sign in</a>
         </div>
       </form>

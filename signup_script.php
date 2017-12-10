@@ -1,5 +1,7 @@
 <?php
-  require('db_connect.php');
+
+session_start();
+  //require('db_connect.php');
 
   function newUser(){
     $fullname = $_POST['full_name'];
@@ -14,6 +16,7 @@
   }
 
   function signUp(){
+		echo "HIII";
     if(!empty($_POST['email'])){
       $query = mysqli_query("SELECT * FROM Users WHERE Username = '$_POST[email]' AND Password = '$_POST[password]'");
     }

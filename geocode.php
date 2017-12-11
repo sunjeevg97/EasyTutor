@@ -28,6 +28,8 @@
 
 
   <body>
+    <a href="index.php"><h3>Log out</h3></a>
+    <h3 id="searching">Searching for you. Please allow your browser to use your location.</h3>
     <div id="map"></div>
     
     <script>
@@ -100,6 +102,8 @@
             infoWindow.setPosition(pos);
             infoWindow.setContent('You are here');
             infoWindow.open(map);
+
+            document.getElementById("searching").innerHTML = "Found you! Here are your coordinates=> </br> longitude: "+longitude+", latitude: "+latitude;
             
             
             mapTutor(-79.0533723-1,35.9102378-1,'tutor1');
@@ -133,35 +137,55 @@
     </script>
     
     
-<?php
-session_start();
-$email=$_SESSION['email'];
-echo $email;
 
-
-$con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
-
-
-$sql="SELECT * FROM Users WHERE Privileges=1";
-$result= $con->query($sql);
-while($row = $result->fetch_assoc()) {
-           
-        //echo "longitude: ".$row['longitude'].;
-        //echo "<script>mapTutor(-79.0533723-3,35.9102378-2,'tutor3');</script>";
-        echo "<p id='account".$row['UserID']."'>Message Tutor: " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
-
-        
-        
-        }
-
-
-?>
 
   </body>
 </html>
 
 
+<?php
+session_start();
+$email=$_SESSION['email'];
+echo $email."</br>";
 
+
+$con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
+
+
+$whoToShow= "SELECT * FROM Users WHERE Username='$email'";
+$answer = $con->query($whoToShow);
+
+
+ $usertype = $answer->fetch_assoc();
+ echo "usertype: ".$usertype['Privileges'];
+
+
+
+
+
+
+
+if($usertype['Privileges']=='tutor'){
+$sql="SELECT * FROM Users WHERE Privileges='student'";
+$result= $con->query($sql);
+
+while($row = $result->fetch_assoc()) { //If user is a tutor display students
+        //echo "<script>mapTutor(-79.0533723-3,35.9102378-2,'tutor3');</script>";
+        echo "<p id='account".$row['UserID']."'>Message Student: " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        }
+}
+
+if($usertype['Privileges'] =='student'){//If user is a student, display tutors
+$sql="SELECT * FROM Users WHERE Privileges='tutor'";
+$result= $con->query($sql);
+while($row = $result->fetch_assoc()) {
+        //echo "<script>mapTutor(-79.0533723-3,35.9102378-2,'tutor3');</script>";
+        echo "<p id='account".$row['UserID']."'>Message Tutor: " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        }
+}
+
+
+?>
 
 
 

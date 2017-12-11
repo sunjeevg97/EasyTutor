@@ -1,5 +1,8 @@
 <?php
-//session_start();
+session_start();
+$email=$_SESSION['email'];
+// echo $email."externalsession";
+
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
 
 
@@ -9,18 +12,10 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
 		echo json_encode($latitude);
 		echo json_encode("hello world");
 
-
-
-	// $sql="INSERT INTO Users(Full_Name,Username,Password,Privileges,Phone_Number) VALUES
-   //       ('William','bob@bob.com','kdsajfad',1,8329382943)";
-   //          $con->query($sql);
-
-
-
 //Need to make a query to set longitude for specific userID
-$sql="UPDATE Users SET longitude=$longitude WHERE Privileges=1";
+$sql="UPDATE Users SET longitude=$longitude WHERE Username='$email'";
 $con->query($sql);
-$sql="UPDATE Users SET latitude=$latitude WHERE Privileges=1";
+$sql="UPDATE Users SET latitude=$latitude WHERE Username='$email'";
 $con->query($sql);
 
 
@@ -32,5 +27,17 @@ $con->query($sql);
 
 
 
+
+
+
+// $sql="INSERT INTO Users(Full_Name,Username,Password,Privileges,Phone_Number) VALUES
+   //       ('William','bob@bob.com','kdsajfad',1,8329382943)";
+   //          $con->query($sql);
+	
+
+
+
 ?>
+
+
 

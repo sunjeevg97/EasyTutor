@@ -5,9 +5,18 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
         $email= $_POST['email'];
         $pass= $_POST['password'];
         $phone= $_POST['phone'];
-		$tutor=$_POST['type'];
+		
+    $tutor=$_POST['type'];
+      $usertype=0;
+      if($tutor == 'tutor'){//1 --> Tutor
+        $usertype = 'tutor';
+      }
+      if($tutor == 'student'){//2-->Student
+        $usertype = 'student';
+      }
+
 		$error= "";
-		echo $fullname;
+		
     
     if (empty($fullname)){
         $error="Name is required.\n";
@@ -26,13 +35,16 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
 		echo $error;
     }
 		 $sql="INSERT INTO Users(Full_Name,Username,Password,Privileges,Phone_Number) VALUES
-         ('$fullname','$email','$pass',1,'$phone')";
+         ('$fullname','$email','$pass','$tutor','$phone')";
             $con->query($sql);
 	unset($name);
 	unset($email);
 	unset($pass);
 	unset($error);
 	}
+
+
+  echo "<h2>".$fullname.", thank you for signing up as a ".$tutor."! Please click to return to our log in page!</h2>";
 
 
 ?>
@@ -46,7 +58,7 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
   </head>
 <body>
 
-<h1>Thank you for signing up, please click to return and log in!</h1>
+
 <a href="index.php"><button>Return to sign in page</button></a>
 
 

@@ -45,12 +45,12 @@
 
         <div class = "form-group">
         <select class="form-control-lg" name="type" placeholder = "User Type">
-          <option>Tutor</option>
-          <option>Student</option>
+          <option>tutor</option>
+          <option>student</option>
         </select>
         </div>
           <button class="btn btn-lg btn-outline-success .col-md-3" name="submit" type="submit">Sign Up</button>
-          <a href="index.html" class="">Already have an account? Sign in</a>
+          <a href="index.php" class="">Already have an account? Sign in</a>
         </div>
       </form>
 

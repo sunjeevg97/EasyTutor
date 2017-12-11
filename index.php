@@ -54,6 +54,7 @@ $email=$_POST['email'];
 $pass= $_POST['password'];
 $error="";
 $_SESSION['email']=$email;
+
 $sql="SELECT * FROM Users WHERE Username='$email'";
 $result=$con->query($sql); 
 if($result->num_rows==0){

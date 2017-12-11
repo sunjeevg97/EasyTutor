@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
   <head>
@@ -19,16 +20,16 @@
 
     <div class="container">
 
-      <form class="form-signin">
+      <form class="form-signin" method = "POST" action = "index.php">
         <div class ="form-group">
 
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control-lg" placeholder="Email address" required autofocus>
+        <input type="email" name="email" id="inputEmail" class="form-control-lg" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control-lg" placeholder="Password" required>
+        <input type="password" name="password" id="inputPassword" class="form-control-lg" placeholder="Password" required>
         </div>
 
-        <button class="btn btn-lg btn-outline-success .col-md-3" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-outline-success .col-md-3" type="submit" name="login" action="aftersignin.php">Sign in</button>
       </form>
 
         <a href="signup.php" class="">Don't have an account? Sign up here!</a>
@@ -38,3 +39,52 @@
   </body>
 
 </html>
+
+
+
+<?php
+session_start();
+$con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
+
+if(isset($_POST['login'])){
+  echo "filled out";
+
+
+$email=$_POST['email'];
+$pass= $_POST['password'];
+$error="";
+$_SESSION['email']=$email;
+$sql="SELECT * FROM Users WHERE Username='$email'";
+$result=$con->query($sql); 
+if($result->num_rows==0){
+  echo("The email and password you entered do not match our records. Please try again.");
+}else{
+$correctpass=$result->fetch_assoc();
+if($pass != $correctpass['Password']){
+  echo("The password you entered is incorrect.");
+  
+}else{
+
+  ?>
+  <script>
+   window.location='aftersignin.php';
+  </script>
+    <?php
+}
+
+
+}
+
+
+}
+
+
+?>
+
+
+
+
+
+
+
+

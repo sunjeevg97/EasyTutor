@@ -16,14 +16,20 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
    //          $con->query($sql);
 
 
+
+//Need to make a query to set longitude for specific userID
 $sql="UPDATE Users SET longitude=$longitude WHERE Privileges=1";
+$con->query($sql);
+$sql="UPDATE Users SET latitude=$latitude WHERE Privileges=1";
 $con->query($sql);
 
 
-//$sql="SELECT Full_Name FROM Users WHERE Privileges=1";
-//$result= $con->query($sql);
-//while($row = $result->fetch_assoc()) {
-//        echo "Tutor: " . $row["Full_Name"] . "<br>";    }
+
+// $sql="SELECT COUNT(*) AS 'count' FROM Users WHERE Privileges=1";
+// $result=$con->query($sql);
+// $row=$result->fetch_assoc();
+// echo $row;
+
 
 
 ?>

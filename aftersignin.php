@@ -1,41 +1,17 @@
 <?php
+session_start();
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
-    if(isset($_POST['submit'])){
-        $fullname= $_POST['full_name'];
-        $email= $_POST['email'];
-        $pass= $_POST['password'];
-        $phone= $_POST['phone'];
-		$tutor=$_POST['type'];
-		$error= "";
-		echo $fullname;
-    
-    if (empty($fullname)){
-        $error="Name is required.\n";
-		echo $error;
-    }
-     if (empty($email)){
-        $error="Email is required.\n";
-		echo $error;
-    }
-     if (empty($pass)){
-        $error="Password is required.\n";
-		echo $error;
-    }
-     if (empty($phone)){
-        $error="Phone Number is required.\n";
-		echo $error;
-    }
-		 $sql="INSERT INTO Users(Full_Name,Username,Password,Privileges,Phone_Number) VALUES
-         ('$fullname','$email','$pass',1,'$phone')";
-            $con->query($sql);
-	unset($name);
-	unset($email);
-	unset($pass);
-	unset($error);
-	}
+$email=$_SESSION['email'];
+$sql="SELECT Full_Name FROM Users WHERE Username='$email'";
+$result=$con->query($sql);
+$nameaccess=$result->fetch_assoc();
+$name=$nameaccess['Full_Name'];
+
+echo "<h1 style='color:#16A085;font-family:Verdana;'>"."Hello ".$name."!"."</h1>";
 
 
 ?>
+
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -45,13 +21,14 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </head>
 <body>
+<a href="geocode.php"><button>Find Tutors!</button></a>
 
-<h1>Thank you for signing up, please click to return and log in!</h1>
-<a href="index.php"><button>Return to sign in page</button></a>
+<a href=""><button>View Messaging History</button></a>
+
+
 
 
 
  </body>
 
 </html>
-

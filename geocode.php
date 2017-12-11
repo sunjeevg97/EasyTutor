@@ -103,7 +103,7 @@
             
             
             mapTutor(-79.0533723-1,35.9102378-1,'tutor1');
-             mapTutor(-79.0533723-2,35.9102378-2,'tutor2');
+            mapTutor(-79.0533723-2,35.9102378-2,'tutor2');
             
             map.setCenter(pos);
           }, function() {
@@ -134,6 +134,10 @@
     
     
 <?php
+session_start();
+$email=$_SESSION['email'];
+echo $email;
+
 
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
 
@@ -141,8 +145,11 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
 $sql="SELECT * FROM Users WHERE Privileges=1";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) {
-        //echo "Tutor: " . $row["Full_Name"] . "<br>";    
-        echo "<p id='account".$row["UserID"]."'>Message Tutor: " . $row["Full_Name"] . "</p>";
+           
+        //echo "longitude: ".$row['longitude'].;
+        //echo "<script>mapTutor(-79.0533723-3,35.9102378-2,'tutor3');</script>";
+        echo "<p id='account".$row['UserID']."'>Message Tutor: " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+
         
         
         }

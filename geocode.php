@@ -27,9 +27,9 @@ $sql="SELECT * FROM Users WHERE Privileges='student'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) { //If user is a tutor display students
 
-        echo "<p class='userlist' id='account".$idcounter."'>Message Student".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        echo "<p class='userlist' id='".$idcounter."'>Message Student".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
 
-        array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude']));
+        array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
         $idcounter++;
         }
@@ -41,11 +41,11 @@ $sql="SELECT * FROM Users WHERE Privileges='tutor'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) {
         
-        echo "<p id='account".$idcounter."'>Message Tutor".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        echo "<p id='".$idcounter."'>Message Tutor".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
 
         //echo"<script>$('#account0').click(function{alert('click')});</script>";
 
-        array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude']));
+        array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
         $idcounter++;
         }    
@@ -101,7 +101,25 @@ while($row = $result->fetch_assoc()) {
   <body>
     <h3 id='searching'>Searching for you. Please allow your browser to use your location.</h3>
     <div id='map'></div>
-  </br>
+
+
+
+
+
+
+
+    <div id='messageform' style='border-style: solid;'>
+
+        <form name='form1'>
+          <div class = 'form-group'>
+            <label for='writemessage'>Write Message</label>
+            <input id='note' type='text' name='notename'>
+
+          </div>
+
+        <p id='sendbutton' name="submit" type="submit">Send Message</p>
+        </form>
+    </div>
 
  
 
@@ -112,36 +130,77 @@ while($row = $result->fetch_assoc()) {
       // failed.', it means you probably did not give permission for the browser to
       // locate you.
 
+      $('#messageform').hide();
+
+
         var targetjs = <?php echo json_encode($target_array); ?>;
 
+        var recipient;
 
-          $(document).ready(function () {
-
-            var count = 0;
-
-            //use for each loop (targetjs array?) to fix error or maybe figure out how to add click listener
-
-            for(var i = 0; i < targetjs.length; i++) {
-
-              $('#account'+String(count)).on('click',function(){
-
-                alert('You clicked on user '+String(count));
-
-                count++;
-            });
-
-
-              // //for iterating through each individual element
-              // for(var j = 0; j < targetjs[i].length; j++) { 
-              //     console.log('jsrepresentation'+targetjs[i][j]);
-              // }
-
-            
-          }
-
-            
+        var count =0;
         
+        targetjs.forEach(function(){
+            
+                  $('#'+String(count)).on('click',function(){
+
+                    var ident = $(this).attr('id');
+
+
+
+                    alert('You clicked on user '+ ident );
+
+
+
+                    recipient = targetjs[ident][3];
+
+                    alert(recipient);
+
+                    $('#messageform').toggle();
+
+
+                 });
+                                       
+           count++;
+  
         });
+
+
+
+        $('#sendbutton').click(function(){
+
+          var messToSend = $('#note').val();
+
+          var recipname = recipient;
+
+          var username = <?php echo json_encode($email); ?>;
+
+
+           $.ajax({
+                url: 'sent.php',
+                method: 'POST',
+                data: { 'message': messToSend, 'from': username, 'to':recipname },
+                success: function (data) {
+                  console.log(data);
+                }
+          });
+
+        });
+
+
+
+
+
+
+
+
+
+                                        //for iterating through each individual element
+                                      // for(var i=0; i < targetjs.length; i++){
+                                      //  for(var j = 0; j < targetjs[i].length; j++) { 
+                                      //      console.log('jsrepresentation'+targetjs[i][j]);
+                                      //  }
+                                      // }
+
 
 
       var longitude;
@@ -200,8 +259,6 @@ while($row = $result->fetch_assoc()) {
 
                     document.getElementById('searching').innerHTML = 'Found you! Here are your coordinates=> </br> (longitude: '+longitude+', latitude: '+latitude+')';
             
-            
-                    // mapTutor(-79.0533723-1,35.9102378-1,'tutor1');
                     
             
                     map.setCenter(pos);

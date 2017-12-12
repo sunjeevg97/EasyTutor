@@ -27,7 +27,7 @@ if($usertype['Privileges'] =='student'){
 	echo"<a href='geocode.php'><button>Find Tutors!</button></a> ";
 }
 
-echo "<a href=''><button>View Messaging History</button></a></br>";
+echo "<a href='messages.php'><button>View Messaging History</button></a></br>";
 echo "<a href='index.php'>Log out</a></br>";
 
 

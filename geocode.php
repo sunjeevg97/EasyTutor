@@ -1,7 +1,7 @@
 <?php
 session_start();
 $email=$_SESSION['email'];
-echo $email."</br>";
+echo "<b>Username: </b>".$email."</br>";
 
 
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
@@ -11,7 +11,10 @@ $whoToShow= "SELECT * FROM Users WHERE Username='$email'";
 $answer = $con->query($whoToShow);
 
  $usertype = $answer->fetch_assoc();
- echo "usertype: ".$usertype['Privileges'];
+ echo "<b>Account type: </b>".$usertype['Privileges'];
+
+ echo"<a href='index.php'><h3>Log out</h3></a>";
+
 
 
 $target_array = array();
@@ -19,11 +22,12 @@ $target_array = array();
 $idcounter = 0;
 
  if($usertype['Privileges']=='tutor'){
+  echo "<b>Here are some students you may want to get in contact with:</b>";
 $sql="SELECT * FROM Users WHERE Privileges='student'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) { //If user is a tutor display students
 
-        echo "<p id='account".$idcounter."'>Message Student".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        echo "<p class='userlist' id='account".$idcounter."'>Message Student".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
 
         array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude']));
 
@@ -32,11 +36,14 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
 }
 
 if($usertype['Privileges'] =='student'){//If user is a student, display tutors
+  echo "<b>Here are some tutors who may be able to help you:</b>";
 $sql="SELECT * FROM Users WHERE Privileges='tutor'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) {
         
         echo "<p id='account".$idcounter."'>Message Tutor".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+
+        //echo"<script>$('#account0').click(function{alert('click')});</script>";
 
         array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude']));
 
@@ -45,15 +52,16 @@ while($row = $result->fetch_assoc()) {
 }
 
 
-for($layer=0;$layer<$idcounter;$layer++){
+// //print php array for testing
+// for($layer=0;$layer<$idcounter;$layer++){
 
-        for($col=0;$col<3; $col++){
-            echo ' | '.$target_array[$layer][$col];
+//         for($col=0;$col<3; $col++){
+//             echo ' | '.$target_array[$layer][$col];
 
-        }
-        echo '</br>';
+//         }
+//         echo '</br>';
 
-}
+// }
 
 
 
@@ -91,11 +99,10 @@ for($layer=0;$layer<$idcounter;$layer++){
 
 
   <body>
-    <a href='index.php'><h3>Log out</h3></a>
     <h3 id='searching'>Searching for you. Please allow your browser to use your location.</h3>
     <div id='map'></div>
   </br>
-  </br>
+
  
 
     
@@ -104,6 +111,37 @@ for($layer=0;$layer<$idcounter;$layer++){
       // prompted by your browser. If you see the error 'The Geolocation service
       // failed.', it means you probably did not give permission for the browser to
       // locate you.
+
+        var targetjs = <?php echo json_encode($target_array); ?>;
+
+
+          $(document).ready(function () {
+
+            var count = 0;
+
+            //use for each loop (targetjs array?) to fix error or maybe figure out how to add click listener
+
+            for(var i = 0; i < targetjs.length; i++) {
+
+              $('#account'+String(count)).on('click',function(){
+
+                alert('You clicked on user '+String(count));
+
+                count++;
+            });
+
+
+              // //for iterating through each individual element
+              // for(var j = 0; j < targetjs[i].length; j++) { 
+              //     console.log('jsrepresentation'+targetjs[i][j]);
+              // }
+
+            
+          }
+
+            
+        
+        });
 
 
       var longitude;
@@ -160,7 +198,7 @@ for($layer=0;$layer<$idcounter;$layer++){
                     infoWindow.setContent('YOU ARE HERE');
                     infoWindow.open(map);
 
-                    document.getElementById('searching').innerHTML = 'Found you! Here are your coordinates=> </br> longitude: '+longitude+', latitude: '+latitude;
+                    document.getElementById('searching').innerHTML = 'Found you! Here are your coordinates=> </br> (longitude: '+longitude+', latitude: '+latitude+')';
             
             
                     // mapTutor(-79.0533723-1,35.9102378-1,'tutor1');
@@ -194,7 +232,7 @@ for($layer=0;$layer<$idcounter;$layer++){
         }
 
 
-          var targetjs = <?php echo json_encode($target_array); ?>;
+          
 
 
 
@@ -206,6 +244,8 @@ for($layer=0;$layer<$idcounter;$layer++){
               
               mapTutor(longinput,latinput,nameinput);
 
+
+              // //for iterating through each individual element
               // for(var j = 0; j < targetjs[i].length; j++) { 
               //     console.log('jsrepresentation'+targetjs[i][j]);
               // }

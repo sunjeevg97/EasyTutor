@@ -46,8 +46,8 @@
 session_start();
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
 
-if(isset($_POST['login'])){
-  echo "filled out";
+if(isset($_POST['login'])){ 
+  //text was entered into form fields
 
 
 $email=$_POST['email'];
@@ -58,11 +58,11 @@ $_SESSION['email']=$email;
 $sql="SELECT * FROM Users WHERE Username='$email'";
 $result=$con->query($sql); 
 if($result->num_rows==0){
-  echo("The email and password you entered do not match our records. Please try again.");
+  echo("<span class ='incorrect' style ='color:red;'>The email and password you entered do not correspond to those in our records. Please try again.</span>");
 }else{
 $correctpass=$result->fetch_assoc();
 if($pass != $correctpass['Password']){
-  echo("The password you entered is incorrect.");
+  echo("<span class ='incorrect' style='color:red;'>The password you entered is incorrect.</span>");
   
 }else{
 

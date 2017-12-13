@@ -49,6 +49,7 @@ $answer = $con->query($whoToShow);
           <h1>Find Tutors in Your Area</h1>
           <p class="lead"></p>
           <?php echo $result; ?>
+          <a class = 'btn btn-lg btn-primary .col-md-3' href='messages.php'>Messages</a>
         </div>
 
       </div> <!-- /container -->

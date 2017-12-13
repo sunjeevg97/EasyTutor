@@ -168,31 +168,24 @@ while($row = $result->fetch_assoc()) {
           var username = <?php echo json_encode($email); ?>;
 
 
-           $.ajax({
-                url: 'sent.php',
-                method: 'POST',
-                data: { 'message': messToSend, 'from': username, 'to':recipname },
-                success: function (data) {
-                  console.log(data);
-                }
-          });
+             $.ajax({
+                  url: 'sent.php',
+                  method: 'POST',
+                  data: { 'message': messToSend, 'from': username, 'to':recipname },
+                  success: function (data) {
+                    console.log(data);
+                  }
+            });
 
         });
 
 
-
-
-
-
-
-
-
-                                        //for iterating through each individual element
-                                      // for(var i=0; i < targetjs.length; i++){
-                                      //  for(var j = 0; j < targetjs[i].length; j++) {
-                                      //      console.log('jsrepresentation'+targetjs[i][j]);
-                                      //  }
-                                      // }
+         //for iterating through each individual element
+         // for(var i=0; i < targetjs.length; i++){
+         //  for(var j = 0; j < targetjs[i].length; j++) {
+        //      console.log('jsrepresentation'+targetjs[i][j]);
+        //  }
+        // }
 
 
 

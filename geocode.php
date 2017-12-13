@@ -22,12 +22,12 @@ $target_array = array();
 $idcounter = 0;
 
  if($usertype['Privileges']=='tutor'){
-  echo "<b>Here are some students you may want to get in contact with:</b>";
+  echo "<b>Click on a student to contact:</b>";
 $sql="SELECT * FROM Users WHERE Privileges='student'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) { //If user is a tutor display students
 
-        echo "<p class='userlist' id='".$idcounter."'>Message Student".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        echo "<p class='userlist' id='".$idcounter."'>Student".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
 
         array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
@@ -36,12 +36,12 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
 }
 
 if($usertype['Privileges'] =='student'){//If user is a student, display tutors
-  echo "<b>Here are some tutors who may be able to help you:</b>";
+  echo "<b>Click on a tutor to contact:</b>";
 $sql="SELECT * FROM Users WHERE Privileges='tutor'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) {
 
-        echo "<p id='".$idcounter."'>Message Tutor".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
+        echo "<p id='".$idcounter."'>Tutor".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
 
         //echo"<script>$('#account0').click(function{alert('click')});</script>";
 
@@ -102,6 +102,26 @@ while($row = $result->fetch_assoc()) {
       // prompted by your browser. If you see the error 'The Geolocation service
       // failed.', it means you probably did not give permission for the browser to
       // locate you.
+
+      function distance(lat1, lon1, lat2, lon2) {
+            var radlat1 = Math.PI * lat1/180;
+            var radlat2 = Math.PI * lat2/180;
+            var theta = lon1-lon2;
+            var radtheta = Math.PI * theta/180;
+            var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+            dist = Math.acos(dist);
+            dist = dist * 180/Math.PI;
+            dist = dist * 60 * 1.1515;
+            
+            return dist;
+      }
+
+        //console.log("distance: "+distance(5,43,123,433));
+
+
+
+
+
 
       $('#messageform').hide();
 
@@ -309,6 +329,45 @@ while($row = $result->fetch_assoc()) {
                     infoWindow.setPosition(pos);
                     infoWindow.setContent('YOU ARE HERE');
                     infoWindow.open(map);
+
+                      //set distances
+
+                      
+
+                  
+                  
+                  for(var rowNum=0;rowNum<targetjs.length;rowNum++){
+                  // targetjs.forEach(function(){
+
+
+                    var otherLong=targetjs[rowNum][1];
+                    var otherLat=targetjs[rowNum][2];
+
+                    console.log(otherLong);
+                    console.log(otherLat);
+
+                    var distanceBetween = distance(pos.lat,pos.lng,otherLat,otherLong);
+
+
+                      console.log(distanceBetween+"Miles");
+
+                      $('#'+rowNum).append(" - ("+distanceBetween+" miles away from you)");
+
+
+                        
+                  }
+
+
+
+
+
+
+
+
+
+
+
+
 
                     document.getElementById('searching').innerHTML = 'Found you! Here are your coordinates=> </br> (longitude: '+longitude+', latitude: '+latitude+')';
 

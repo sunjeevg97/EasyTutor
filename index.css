@@ -1,3 +1,7 @@
+html,body{
+  min-height: 100%;
+}
+
 body{
     background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('studying.jpg');
     background-size:     cover;                      /* <------ */
@@ -5,16 +9,15 @@ body{
     background-position: center center;
 }
 
-body:after {
-    content: "";
-    background: url('checkered-pattern.png') repeat;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: -1;
-
+html,body:after {
+  background: url('checkered-pattern.png') repeat;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+  height:auto;
 }
 
 .jumbotron{
@@ -24,4 +27,3 @@ body:after {
 h1,h2,p,label,a{
   color: white;
 }
-

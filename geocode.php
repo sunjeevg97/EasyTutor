@@ -40,7 +40,7 @@ if($usertype['Privileges'] =='student'){//If user is a student, display tutors
 $sql="SELECT * FROM Users WHERE Privileges='tutor'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) {
-        
+
         echo "<p id='".$idcounter."'>Message Tutor".$idcounter.": " . $row['Full_Name'] . "(long:".$row['longitude'].",lat:".$row['latitude'].")</p>";
 
         //echo"<script>$('#account0').click(function{alert('click')});</script>";
@@ -48,22 +48,8 @@ while($row = $result->fetch_assoc()) {
         array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
         $idcounter++;
-        }    
+        }
 }
-
-
-// //print php array for testing
-// for($layer=0;$layer<$idcounter;$layer++){
-
-//         for($col=0;$col<3; $col++){
-//             echo ' | '.$target_array[$layer][$col];
-
-//         }
-//         echo '</br>';
-
-// }
-
-
 
 
 ?>
@@ -75,38 +61,25 @@ while($row = $result->fetch_assoc()) {
 
   <head>
     <script src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js'></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="map.css">
+    <link href="jumbotron-narrow.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
     <title>Geolocation</title>
     <meta name='viewport' content='initial-scale=1.0, user-scalable=no'>
     <meta charset='utf-8'>
     <style>
-      
-      body {background-color: gray;}
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Set proportions of html*/
-      html, body {
-        height: 70%;
-        width: 80%;
-        margin: 0;
-        padding: 0;
-      }
+    #map{
+      height: 100%;
+      width: 50%;
+    }
     </style>
   </head>
-
-
   <body>
     <h3 id='searching'>Searching for you. Please allow your browser to use your location.</h3>
     <div id='map'></div>
-
-
-
-
-
-
 
     <div id='messageform' style='border-style: solid;'>
 
@@ -121,9 +94,9 @@ while($row = $result->fetch_assoc()) {
         </form>
     </div>
 
- 
 
-    
+
+
     <script>
       // Note: This example requires that you consent to location sharing when
       // prompted by your browser. If you see the error 'The Geolocation service
@@ -138,30 +111,30 @@ while($row = $result->fetch_assoc()) {
         var recipient;
 
         var count =0;
-        
+
         targetjs.forEach(function(){
-            
+
                   $('#'+String(count)).on('click',function(){
 
                     var ident = $(this).attr('id');
 
 
 
-                    alert('You clicked on user '+ ident );
+                    console.log('You clicked on user '+ ident );
 
 
 
                     recipient = targetjs[ident][3];
 
-                    alert(recipient);
+                    console.log(recipient);
 
-                    $('#messageform').toggle();
+                    $('#messageform').show();
 
 
                  });
-                                       
+
            count++;
-  
+
         });
 
 
@@ -196,7 +169,7 @@ while($row = $result->fetch_assoc()) {
 
                                         //for iterating through each individual element
                                       // for(var i=0; i < targetjs.length; i++){
-                                      //  for(var j = 0; j < targetjs[i].length; j++) { 
+                                      //  for(var j = 0; j < targetjs[i].length; j++) {
                                       //      console.log('jsrepresentation'+targetjs[i][j]);
                                       //  }
                                       // }
@@ -205,18 +178,98 @@ while($row = $result->fetch_assoc()) {
 
       var longitude;
       var latitude;
-      
+
      // var mapTutor;
 
       var map, infoWindow, otherWindow;
-      
+
       function initMap() {
 
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: -34.397, lng: 150.644},
-              zoom: 6
+              zoom: 7,
+              styles: [
+            {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+            {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+            {
+              featureType: 'administrative.locality',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'geometry',
+              stylers: [{color: '#263c3f'}]
+            },
+            {
+              featureType: 'poi.park',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#6b9a76'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{color: '#38414e'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#212a37'}]
+            },
+            {
+              featureType: 'road',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#9ca5b3'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [{color: '#746855'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry.stroke',
+              stylers: [{color: '#1f2835'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#f3d19c'}]
+            },
+            {
+              featureType: 'transit',
+              elementType: 'geometry',
+              stylers: [{color: '#2f3948'}]
+            },
+            {
+              featureType: 'transit.station',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#d59563'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{color: '#17263c'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.fill',
+              stylers: [{color: '#515c6d'}]
+            },
+            {
+              featureType: 'water',
+              elementType: 'labels.text.stroke',
+              stylers: [{color: '#17263c'}]
+            }
+          ]
             });
-        
+
 
             infoWindow = new google.maps.InfoWindow;
 
@@ -228,7 +281,7 @@ while($row = $result->fetch_assoc()) {
                       lat: position.coords.latitude,
                       lng: position.coords.longitude
                     };
-            
+
 
                     longitude = pos.lng;
                     latitude = pos.lat;
@@ -246,7 +299,7 @@ while($row = $result->fetch_assoc()) {
                         method: 'POST',
                         data: { 'longitude': longitude, 'latitude': latitude },
                         success: function (data) {
-                          console.log(data);
+                            console.log(data);
                           }
                     });
 
@@ -258,9 +311,9 @@ while($row = $result->fetch_assoc()) {
                     infoWindow.open(map);
 
                     document.getElementById('searching').innerHTML = 'Found you! Here are your coordinates=> </br> (longitude: '+longitude+', latitude: '+latitude+')';
-            
-                    
-            
+
+
+
                     map.setCenter(pos);
 
 
@@ -280,16 +333,16 @@ while($row = $result->fetch_assoc()) {
                     lat:insertLat,
                     lng:insertLong
               };
-              
+
               newWindow.setPosition(newguy);
               newWindow.setContent(tutorName);
               newWindow.open(map);
-        
-        
+
+
         }
 
 
-          
+
 
 
 
@@ -298,16 +351,16 @@ while($row = $result->fetch_assoc()) {
               var nameinput=targetjs[i][0];
               var longinput=Number(targetjs[i][1]);
               var latinput=Number(targetjs[i][2]);
-              
+
               mapTutor(longinput,latinput,nameinput);
 
 
               // //for iterating through each individual element
-              // for(var j = 0; j < targetjs[i].length; j++) { 
+              // for(var j = 0; j < targetjs[i].length; j++) {
               //     console.log('jsrepresentation'+targetjs[i][j]);
               // }
 
-            
+
           }
 
 
@@ -332,26 +385,10 @@ while($row = $result->fetch_assoc()) {
             infoWindow.open(map);
           }
 
-
-       
-
-  
    </script>
 
     <script async defer
     src='https://maps.googleapis.com/maps/api/js?key=AIzaSyD6aQaHYbG5Bzu3lFUQMw3V-jeOEuyvP2U&callback=initMap'>
     </script>
-    
-    
-
-
   </body>
 </html>
-
-
-
-
-
-
-
-

@@ -1,6 +1,4 @@
-<style>
-  /* Always set the map height explicitly to define the size of the div
-   * element that contains the map. */
-  /* Set proportions of html*/
-
-</style>
+body, html{
+  height: 100%;
+  width: 100%;
+}

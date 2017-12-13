@@ -1,7 +1,7 @@
 <?php
 session_start();
 $email=$_SESSION['email'];
-echo "<b>Username: </b>".$email."</br>";
+//echo "<b>Username: </b>".$email."</br>";
 
 
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
@@ -10,10 +10,10 @@ $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb')
 $whoToShow= "SELECT * FROM Users WHERE Username='$email'";
 $answer = $con->query($whoToShow);
 
- $usertype = $answer->fetch_assoc();
- echo "<b>Account type: </b>".$usertype['Privileges'];
+$usertype = $answer->fetch_assoc();
+ //echo "<b>Account type: </b>".$usertype['Privileges'];
 
- echo"<a href='index.php'><h3>Log out</h3></a>";
+ //echo"<a href='index.php'><h3>Log out</h3></a>";
 
 
 
@@ -22,12 +22,12 @@ $target_array = array();
 $idcounter = 0;
 
  if($usertype['Privileges']=='tutor'){
-  echo "<b>Click on a student to contact:</b>";
+  //echo "<b>Click on a student to contact:</b>";
 $sql="SELECT * FROM Users WHERE Privileges='student'";
 $result= $con->query($sql);
 while($row = $result->fetch_assoc()) { //If user is a tutor display students
 
-        echo "<p class='userlist' id='".$idcounter."'>Student".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
+      //  echo "<p class='userlist' id='".$idcounter."'>Student".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
 
         array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
@@ -35,21 +35,19 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
         }
 }
 
-if($usertype['Privileges'] =='student'){//If user is a student, display tutors
-  echo "<b>Click on a tutor to contact:</b>";
-$sql="SELECT * FROM Users WHERE Privileges='tutor'";
-$result= $con->query($sql);
-while($row = $result->fetch_assoc()) {
-
-        echo "<p id='".$idcounter."'>Tutor".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
-
+  if($usertype['Privileges'] =='student'){//If user is a student, display tutors
+    //echo "<b>Click on a tutor to contact:</b>";
+    $sql="SELECT * FROM Users WHERE Privileges='tutor'";
+    $result= $con->query($sql);
+    while($row = $result->fetch_assoc()) {
+          //$tutor_list =  "<p id='".$idcounter."'>Tutor".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
         //echo"<script>$('#account0').click(function{alert('click')});</script>";
 
-        array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
+          array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
 
-        $idcounter++;
-        }
-}
+          $idcounter++;
+      }
+    }
 
 
 ?>
@@ -72,30 +70,123 @@ while($row = $result->fetch_assoc()) {
     <meta charset='utf-8'>
     <style>
     #map{
-      height: 100%;
+      float:right;
+      position:fixed;
       width: 50%;
+      height: 106%;
+      margin-top: -20px;
+    }
+    .nav{
+      position: fixed !important;
+      top: 30px;
+      margin-left: 30px;
+      width:500px;
+    }
+
+    .user-list{
+      margin-top: 100px;
+    }
+
+    .list-group{
+      padding: 3px 10px;
     }
     </style>
   </head>
   <body>
-    <h3 id='searching'>Searching for you. Please allow your browser to use your location.</h3>
-    <div id='map'></div>
+      <nav class="nav nav-pills">
+        <a class="nav-link" href="aftersignin.php">Profile</a>
+        <a class="nav-link active" href="#">
+          <? if($usertype['Privileges'] == 'student'){
+              echo "Find Tutors";
+            }else{
+              echo "Find Students";
+            }
+          ?>
+        </a>
+        <a class="nav-link" href="messages.php">Messages</a>
+        <a class="nav-link" href="index.php">Logout</a>
+      </nav>
+    <!--<h3 id='searching'>Searching for you. Please allow your browser to use your location.</h3>-->
+      <div id='map'></div>
 
-    <div id='messageform' style='border-style: solid;'>
+      <div class = "user-list">
+        <? if($usertype['Privileges'] =='student'){
 
-        <form name='form1'>
-          <div class = 'form-group'>
-            <label for='writemessage'>Write Message</label>
-            <input id='note' type='text' name='notename'>
+            $sql="SELECT * FROM Users WHERE Privileges='tutor'";
+            $result= $con->query($sql);
+            $idcounter = 0;
+            while($row = $result->fetch_assoc()) {
+              echo "<div class='list-group'>
+                    <a id = '".$idcounter. "' href='#' class= 'list-group-item list-group-item-action flex-column align-items-start' data-toggle='modal' data-target= '#msgModal'>
+                      <div class='d-flex w-100 justify-content-between'>
+                        <h5 class='mb-1'>". $row['Full_Name']. "</h5>
+                      </div>
+                      <p class='mb-1'></p>
+                        </a>
 
+                    </div>";
+              //echo "<button class = 'btn btn-primary' id='".$idcounter."'>Tutor".$idcounter.": " . $row['Full_Name'] . "</button><br><br>";
+                $idcounter++;
+            }
+          }
+
+          if($usertype['Privileges']=='tutor'){
+         $sql="SELECT * FROM Users WHERE Privileges='student'";
+         $result= $con->query($sql);
+         $idcounter = 0;
+              while($row = $result->fetch_assoc()) { //If user is a tutor display students
+                echo "<div class='list-group'>
+                      <a id = '".$idcounter. "' href='#' class= 'list-group-item list-group-item-action flex-column align-items-start' data-toggle='modal' data-target= '#msgModal'>
+                        <div class='d-flex w-100 justify-content-between'>
+                          <h5 class='mb-1'>". $row['Full_Name']. "</h5>
+                        </div>
+                        <p class='mb-1'></p>
+                          </a>
+
+                      </div>";
+               //  echo "<p class='userlist' id='".$idcounter."'>Student".$idcounter.": <b>" . $row['Full_Name'] . "</b></p>";
+
+                 array_push($target_array,array($row['Full_Name'],$row['longitude'],$row['latitude'],$row['Username']));
+
+                 $idcounter++;
+                 }
+         }
+        ?>
+      </div>
+      <div class="modal fade" id="msgModal" tabindex="-1" role="dialog" aria-labelledby="msgModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <?
+                  if($usertype['Privileges'] == 'student'){
+                      echo "Write a message to the tutor";
+                    }else{
+                      echo "Write a message to the student";
+                    }
+                ?>
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id='messageform'>
+
+                  <form name="form1">
+                      <div class="form-group">
+                        <textarea class="form-control" name = 'notename'id="note" rows="3"></textarea>
+                      </div>
+                    </form>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id='sendbutton' name="submit" type="submit" class ="btn btn-lg btn-outline-warning" data-dismiss = "modal">Send</button>
+              </form>
+            </div>
           </div>
-
-        <p id='sendbutton' name="submit" type="submit">Send Message</p>
-        </form>
-    </div>
-
-
-
+        </div>
+      </div>
 
     <script>
       // Note: This example requires that you consent to location sharing when
@@ -112,8 +203,8 @@ while($row = $result->fetch_assoc()) {
             dist = Math.acos(dist);
             dist = dist * 180/Math.PI;
             dist = dist * 60 * 1.1515;
-            
-            return dist;
+
+            return parseFloat(Math.round(dist * 100) / 100).toFixed(2);
       }
 
         //console.log("distance: "+distance(5,43,123,433));
@@ -196,7 +287,7 @@ while($row = $result->fetch_assoc()) {
 
       var map, infoWindow, otherWindow;
 
-      function initMap() {
+        function initMap() {
 
             map = new google.maps.Map(document.getElementById('map'), {
               center: {lat: -34.397, lng: 150.644},
@@ -325,10 +416,10 @@ while($row = $result->fetch_assoc()) {
 
                       //set distances
 
-                      
 
-                  
-                  
+
+
+
                   for(var rowNum=0;rowNum<targetjs.length;rowNum++){
                   // targetjs.forEach(function(){
 
@@ -344,10 +435,10 @@ while($row = $result->fetch_assoc()) {
 
                       console.log(distanceBetween+"Miles");
 
-                      $('#'+rowNum).append(" - ("+distanceBetween+" miles away from you)");
+                      $('#'+rowNum).append(distanceBetween+" miles away");
 
 
-                        
+
                   }
 
 
@@ -417,7 +508,7 @@ while($row = $result->fetch_assoc()) {
 
 
 
-          console.log('arraylenght: '+targetjs.length);
+          console.log('arraylength: '+targetjs.length);
 
 
 

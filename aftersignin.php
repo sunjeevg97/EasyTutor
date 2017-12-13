@@ -15,13 +15,13 @@ $answer = $con->query($whoToShow);
  $usertype = $answer->fetch_assoc();
 
  if($usertype['Privileges']=='tutor'){
-   $result = "<a class = 'btn btn-lg btn-primary .col-md-3' href='geocode.php'>Find Students!</a>";
+   $result = "<a class = 'btn btn-lg btn-danger .col-md-3' href='geocode.php'>Find Students!</a>";
  }
  if($usertype['Privileges'] =='student'){
-   $result = "<a class = 'btn btn-lg btn-primary .col-md-3' href='geocode.php'>Find Tutors!</a>";
+   $result = "<a class = 'btn btn-lg btn-danger .col-md-3' href='geocode.php'>Find Tutors!</a>";
  }
 
- $view =  "<a href='messages.php'><button>View Messaging History</button></a></br>";
+ $view_messages =  "<a class = 'btn btn-lg btn-outline-danger .col-md-3' href='messages.php'>View Messages</a>";
 
 ?>
 <head>
@@ -49,7 +49,7 @@ $answer = $con->query($whoToShow);
           <h1>Find Tutors in Your Area</h1>
           <p class="lead"></p>
           <?php echo $result; ?>
-          <a class = 'btn btn-lg btn-primary .col-md-3' href='messages.php'>Messages</a>
+          <?php echo $view_messages; ?>
         </div>
 
       </div> <!-- /container -->

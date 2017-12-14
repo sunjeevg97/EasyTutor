@@ -1,4 +1,45 @@
+<?php
+session_start();
+$con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
+$error = "";
+if(isset($_POST['login'])){
+  //text was entered into form fields
+  $email=$_POST['email'];
+  $pass= $_POST['password'];
+  $_SESSION['email']=$email;
+
+  $sql="SELECT * FROM Users WHERE Username='$email'";
+  $result=$con->query($sql);
+  if($result->num_rows==0){
+    $error = "<div class='alert alert-danger' role='alert'>
+              The email and password you entered do not correspond to those in our records. Please try again.
+            </div>";
+  }else{
+    $correctpass=$result->fetch_assoc();
+    if($pass != $correctpass['Password']){
+
+      $error = "<div class='alert alert-danger' role='alert'>
+                The password you entered is incorrect.
+              </div>";
+
+    }else{
+
+  ?>
+    <script>
+      window.location='aftersignin.php';
+    </script>
+
+  <?php
+  }
+
+
+  }
+
+
+  }
+?>
 <!DOCTYPE html>
+
 <html>
 
   <head>
@@ -33,42 +74,8 @@
       </form>
 
         <a href="signup.php" class="">Don't have an account? Sign up here!</a>
+        <?echo $error ?>
       </div>
-<?php
-session_start();
-$con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
 
-if(isset($_POST['login'])){
-  //text was entered into form fields
-  $email=$_POST['email'];
-  $pass= $_POST['password'];
-  $error="";
-  $_SESSION['email']=$email;
-
-  $sql="SELECT * FROM Users WHERE Username='$email'";
-  $result=$con->query($sql);
-  if($result->num_rows==0){
-    echo("<span class ='incorrect' style ='color:red;'>The email and password you entered do not correspond to those in our records. Please try again.</span>");
-  }else{
-    $correctpass=$result->fetch_assoc();
-    if($pass != $correctpass['Password']){
-      echo("<span class ='incorrect' style='color:red;'>The password you entered is incorrect.</span>");
-
-    }else{
-
-  ?>
-    <script>
-      window.location='aftersignin.php';
-    </script>
-
-  <?php
-  }
-
-
-  }
-
-
-  }
-?>
 </body>
 </html>

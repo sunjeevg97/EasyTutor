@@ -6,6 +6,10 @@ $email=$_SESSION['email'];
 
 $con=mysqli_connect('classroom.cs.unc.edu','sgamage','finalproject','sgamagedb');
 
+$sql="SELECT Full_Name FROM Users WHERE Username='$email'";
+$result=$con->query($sql);
+$nameaccess=$result->fetch_assoc();
+$name=$nameaccess['Full_Name'];
 
 $whoToShow= "SELECT * FROM Users WHERE Username='$email'";
 $answer = $con->query($whoToShow);
@@ -85,6 +89,8 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
 
     .user-list{
       margin-top: 100px;
+      height:80%;
+      overflow: auto;
     }
 
     .list-group{
@@ -94,7 +100,7 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
   </head>
   <body>
       <nav class="nav nav-pills">
-        <a class="nav-link" href="aftersignin.php">Profile</a>
+        <a class="nav-link" href="aftersignin.php" data-toggle="tooltip" data-placement="bottom" title="<?echo $name. "'s Profile"?>">Profile</a>
         <a class="nav-link active" href="#">
           <? if($usertype['Privileges'] == 'student'){
               echo "Find Tutors";
@@ -528,6 +534,9 @@ while($row = $result->fetch_assoc()) { //If user is a tutor display students
             infoWindow.open(map);
           }
 
+          $(function () {
+                  $('[data-toggle="tooltip"]').tooltip();
+              });
    </script>
 
     <script async defer

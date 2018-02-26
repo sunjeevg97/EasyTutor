@@ -1,2 +1,2 @@
 # EasyTutor 
-seemlessly connecting students with tutors in their area
+seamlessly connecting students with tutors in their area
